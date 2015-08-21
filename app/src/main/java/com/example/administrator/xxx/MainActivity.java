@@ -2,6 +2,7 @@ package com.example.administrator.xxx;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 public class MainActivity extends Activity {
+    public final static String BOOK = "com.example.xxx.Book";
     private static final String LOG_TAG = "lllllllllllog";
     private TextView textView;
 
@@ -94,6 +96,10 @@ public class MainActivity extends Activity {
             Log.d(LOG_TAG, result.alt);
             Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr");
             textView.setText(result.title);
+            Book book = result;
+            Intent intent = new Intent(MainActivity.this, DisplayBookActivity.class);
+            intent.putExtra(BOOK, "xx");
+            startActivity(intent);
         }
     }
 
