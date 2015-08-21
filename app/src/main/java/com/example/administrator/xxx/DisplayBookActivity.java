@@ -7,6 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class DisplayBookActivity extends Activity {
 
     @Override
@@ -14,9 +17,11 @@ public class DisplayBookActivity extends Activity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         String book_info = intent.getStringExtra(MainActivity.BOOK);
+        Gson gson = new GsonBuilder().create();
+        Book book = gson.fromJson(book_info, Book.class);
         TextView textView = new TextView(this);
         textView.setTextSize(20);
-        textView.setText(book_info);
+        textView.setText(book.title);
         setContentView(textView);
     }
 
@@ -40,5 +45,11 @@ public class DisplayBookActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public class Book {
+        private String alt;
+        private String title;
+        private String subtitle;
     }
 }

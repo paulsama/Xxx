@@ -21,9 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 public class MainActivity extends Activity {
     public final static String BOOK = "com.example.xxx.Book";
     private static final String LOG_TAG = "lllllllllllog";
@@ -61,14 +58,13 @@ public class MainActivity extends Activity {
     public void searchText(View view) {
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String isbn = editText.getText().toString();
-        Log.d(LOG_TAG, isbn);
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
             // fetch data
-            Log.d(LOG_TAG, "fetch data");
-            textView.setText("fetching data...");
+            Log.d(LOG_TAG, "Fetching data...");
+            textView.setText("Fetching data...");
             new DownloadWebpageTask().execute(isbn);
         } else {
             // display error
@@ -77,9 +73,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    private class DownloadWebpageTask extends AsyncTask<String, Void, Book> {
+    private class DownloadWebpageTask extends AsyncTask<String, Void, String> {
         @Override
-        protected Book doInBackground(String... isbn) {
+        protected String doInBackground(String... isbn) {
 
             // params comes from the execute() call: params[0] is the url.
             try {
@@ -91,19 +87,18 @@ public class MainActivity extends Activity {
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
-        protected void onPostExecute(Book result) {
+        protected void onPostExecute(String result) {
+            Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr The response is body:");
+            Log.d(LOG_TAG, result);
             Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr");
-            Log.d(LOG_TAG, result.alt);
-            Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr");
-            textView.setText(result.title);
-            Book book = result;
+            Log.d(LOG_TAG, "Fetching data finished!");
             Intent intent = new Intent(MainActivity.this, DisplayBookActivity.class);
-            intent.putExtra(BOOK, "xx");
+            intent.putExtra(BOOK, result);
             startActivity(intent);
         }
     }
 
-    private Book downloadUrl(String isbn) throws IOException {
+    private String downloadUrl(String isbn) throws IOException {
         InputStream is = null;
 
         try {
@@ -120,7 +115,7 @@ public class MainActivity extends Activity {
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
-            Log.d(LOG_TAG, "The response is: " + response);
+            Log.d(LOG_TAG, "The response status is: " + response);
             is = conn.getInputStream();
 
             // Convert the InputStream into a string
@@ -135,13 +130,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public class Book {
-        private String alt;
-        private String title;
-        private String subtitle;
-    }
-
-    public Book readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
+    public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte [] buffer = new byte[1024];
         int len;
@@ -149,13 +138,8 @@ public class MainActivity extends Activity {
             baos.write(buffer, 0, len);
         }
         String jsonString = baos.toString();
-        Log.d(LOG_TAG, "================================");
-        Log.d(LOG_TAG, jsonString);
-        Log.d(LOG_TAG, "================================");
-        Gson gson = new GsonBuilder().create();
-        Book book = gson.fromJson(jsonString, Book.class);
         baos.close();
-        return book;
+        return jsonString;
     }
 
 }
