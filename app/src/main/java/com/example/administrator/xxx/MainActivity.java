@@ -17,7 +17,6 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -82,13 +81,13 @@ public class MainActivity extends Activity {
                 return downloadUrl(isbn[0]);
             } catch (IOException e) {
                 Log.d(LOG_TAG, "Unable to retrieve web page. URL may be invalid.");
-                return null;
+                return "xx";
             }
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
-            Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr The response is body:");
+            Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr The response body is:");
             Log.d(LOG_TAG, result);
             Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr");
             Log.d(LOG_TAG, "Fetching data finished!");
@@ -112,6 +111,7 @@ public class MainActivity extends Activity {
             conn.setConnectTimeout(15000 /* milliseconds */);
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
+
             // Starts the query
             conn.connect();
             int response = conn.getResponseCode();
@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    public String readIt(InputStream stream) throws IOException, UnsupportedEncodingException {
+    public String readIt(InputStream stream) throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         byte [] buffer = new byte[1024];
         int len;

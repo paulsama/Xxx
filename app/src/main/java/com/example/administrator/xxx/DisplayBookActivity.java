@@ -15,13 +15,17 @@ public class DisplayBookActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = getIntent();
-        String book_info = intent.getStringExtra(MainActivity.BOOK);
-        Gson gson = new GsonBuilder().create();
-        Book book = gson.fromJson(book_info, Book.class);
         TextView textView = new TextView(this);
         textView.setTextSize(20);
-        textView.setText(book.title);
+        Intent intent = getIntent();
+        String book_info = intent.getStringExtra(MainActivity.BOOK);
+        if (book_info.equals("xx")) {
+            textView.setText("Can't find book for you input");
+        } else {
+            Gson gson = new GsonBuilder().create();
+            Book book = gson.fromJson(book_info, Book.class);
+            textView.setText(book.title);
+        }
         setContentView(textView);
     }
 
