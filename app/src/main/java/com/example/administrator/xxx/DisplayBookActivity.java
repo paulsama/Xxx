@@ -3,12 +3,15 @@ package com.example.administrator.xxx;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+
+import java.util.List;
 
 public class DisplayBookActivity extends Activity {
 
@@ -24,7 +27,12 @@ public class DisplayBookActivity extends Activity {
         } else {
             Gson gson = new GsonBuilder().create();
             Book book = gson.fromJson(book_info, Book.class);
-            textView.setText(book.title);
+            textView.setText(
+                    book.title + " by " + book.author + "\n" +
+                    book.subtitle + "\n" +
+                    book.rating.average + " (" + book.rating.numRaters + "人评价）");
+            Log.d("xxx", book.alt);
+            Log.d("xxx", book.rating.average);
         }
         setContentView(textView);
     }
@@ -51,9 +59,18 @@ public class DisplayBookActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    public class Rating {
+        private String average;
+        private Integer max;
+        private Integer min;
+        private Integer numRaters;
+    }
+
     public class Book {
         private String alt;
+        private List author;
         private String title;
         private String subtitle;
+        private Rating rating;
     }
 }
