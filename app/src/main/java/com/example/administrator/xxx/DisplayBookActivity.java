@@ -3,6 +3,8 @@ package com.example.administrator.xxx;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +26,14 @@ public class DisplayBookActivity extends Activity {
         String book_info = intent.getStringExtra(MainActivity.BOOK);
         Gson gson = new GsonBuilder().create();
         Book book = gson.fromJson(book_info, Book.class);
-        textView.setText(
-                book.title + " by " + book.author + "\n" +
-                book.subtitle + "\n" +
-                book.rating.average + " (" + book.rating.numRaters + "人评价）");
-        Log.d("xxx", book.alt);
-        Log.d("xxx", book.rating.average);
+        String text = book.title + " by " + book.author + "<br>" +
+                book.subtitle + "<br>" +
+                book.rating.average + " (" + book.rating.numRaters + "人评价）" + "<br>" +
+                "<a href='" + book.alt + "'> link </a>";
+
+        textView.setText((Html.fromHtml(text)));
+        textView.setClickable(true);
+        textView.setMovementMethod(LinkMovementMethod.getInstance());
         setContentView(textView);
     }
 
