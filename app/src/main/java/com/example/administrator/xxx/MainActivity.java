@@ -24,6 +24,7 @@ public class MainActivity extends Activity {
     public final static String BOOK = "com.example.xxx.Book";
     private static final String LOG_TAG = "lllllllllllog";
     private TextView textView;
+    private String INPUT_STRING;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class MainActivity extends Activity {
     public void searchText(View view) {
         EditText editText = (EditText) findViewById(R.id.edit_message);
         String isbn = editText.getText().toString();
+        INPUT_STRING = isbn;
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
@@ -81,12 +83,16 @@ public class MainActivity extends Activity {
                 return downloadUrl(isbn[0]);
             } catch (IOException e) {
                 Log.d(LOG_TAG, "Unable to retrieve web page. URL may be invalid.");
-                return "xx";
+                return null;
             }
         }
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
+            if (result == null) {
+                textView.setText("Can't find book for you input: " + INPUT_STRING);
+                return;
+            }
             Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr The response body is:");
             Log.d(LOG_TAG, result);
             Log.d(LOG_TAG, "rrrrrrrrrrrrrrrrrrrrrrr");

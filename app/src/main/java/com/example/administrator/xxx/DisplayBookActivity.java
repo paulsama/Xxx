@@ -22,18 +22,14 @@ public class DisplayBookActivity extends Activity {
         textView.setTextSize(20);
         Intent intent = getIntent();
         String book_info = intent.getStringExtra(MainActivity.BOOK);
-        if (book_info.equals("xx")) {
-            textView.setText("Can't find book for you input");
-        } else {
-            Gson gson = new GsonBuilder().create();
-            Book book = gson.fromJson(book_info, Book.class);
-            textView.setText(
-                    book.title + " by " + book.author + "\n" +
-                    book.subtitle + "\n" +
-                    book.rating.average + " (" + book.rating.numRaters + "人评价）");
-            Log.d("xxx", book.alt);
-            Log.d("xxx", book.rating.average);
-        }
+        Gson gson = new GsonBuilder().create();
+        Book book = gson.fromJson(book_info, Book.class);
+        textView.setText(
+                book.title + " by " + book.author + "\n" +
+                book.subtitle + "\n" +
+                book.rating.average + " (" + book.rating.numRaters + "人评价）");
+        Log.d("xxx", book.alt);
+        Log.d("xxx", book.rating.average);
         setContentView(textView);
     }
 
