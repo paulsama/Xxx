@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -67,10 +66,12 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
-            String re = scanResult.getContents();
-            Log.d("code", re);
+            String isbn = scanResult.getContents();
+            Log.d("code", isbn);
             EditText editText = (EditText) findViewById(R.id.edit_message);
-            editText.setText(re);
+            editText.setText(isbn);
+
+            new DownloadWebpageTask().execute(isbn);
         }
     }
 
