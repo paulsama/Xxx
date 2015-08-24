@@ -1,4 +1,4 @@
-package com.example.administrator.xxx;
+package com.example.administrator.bookinfo;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

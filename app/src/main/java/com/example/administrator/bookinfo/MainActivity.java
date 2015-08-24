@@ -1,4 +1,4 @@
-package com.example.administrator.xxx;
+package com.example.administrator.bookinfo;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,7 +24,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends Activity {
-    public final static String BOOK = "com.example.xxx.Book";
+    public final static String BOOK = "com.example.bookinfo.Book";
     private static final String LOG_TAG = "lllllllllllog";
     private TextView textView;
     private String INPUT_STRING;
